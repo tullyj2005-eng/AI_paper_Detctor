@@ -1,0 +1,70 @@
+import re
+import statistics
+
+#splits the sentences by sentence ending punctuation, record sentence length
+
+ABBREVIATIONS = {
+    "dr", "mr", "mrs", "ms", "prof", "sr", "jr", "st",
+    "e.g", "i.e", "cf", "vs", "etc", "al", "fig", "eq", "vol",
+    "jan", "feb", "mar", "apr", "jun", "jul", "aug", "sep", "oct", "nov", "dec",
+}
+
+_BOUNDARY = re.compile(r'(?<=[.!?])\s+')
+
+_WORD = re.compile(r"[A-Za-z']+")
+
+def _ends_inabbreviation(buffer: str) -> bool:
+    stripped = buffer.rstrip('"\')]')
+    words = stripped.split()
+    if not words:
+        return False
+    last = words[-1].rstrip('.').lower()
+
+    if last in ABBREVIATIONS:
+        return True
+    if len(last) == 1 and last.isalpha():
+        return True
+    if re.fullmatch(r'\d+\.', stripped):
+        return True
+    return False
+
+
+#function called split_sentence - intakes text as string - outputs a list of strings
+#that list of strings is the list of sentences
+def split_sentences(text: str) ->list[str]:
+    #I am going to split by 'oversplitting' then repairing the broken sentences
+    text = " ".join(text.split())
+    if not text:
+        return []
+
+    sentences = []
+    buffer = ""
+
+    for piece in _BOUNDARY.split(text):
+        buffer = f"{buffer} {piece}".strip() if buffer else piece
+        if _ends_inabbreviation(buffer):
+            continue
+        sentences.append(buffer)
+        buffer = ""
+
+    if buffer:
+        sentences.append(buffer)
+
+    return sentences
+
+def count_words(sentence: str) -> int:
+    return len(_WORD.findall(sentence))
+
+
+
+def burstiness(text: str) -> float | None:
+    lengths = [count_words(s) for s in split_sentences(text)]
+    lengths = [n for n in lengths if n > 0]
+    if len(lengths) < 5:
+        return None
+    return statistics.pstdev(lengths) / statistics.fmean(lengths)
+
+
+
+
+
