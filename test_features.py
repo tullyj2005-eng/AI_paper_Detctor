@@ -1,6 +1,6 @@
 """Tests for features.py.  Run with:  py test_features.py"""
 
-from features import split_sentences, count_words, burstiness
+from features import split_sentences, count_words, burstiness, punctuation_usage, proper_punctuation_usage
 
 # ---------------------------------------------------------------------------
 # Fixtures. Ordered by how much their sentence lengths vary.
@@ -179,6 +179,57 @@ def test_burstiness_ordering():
 
 
 # ---------------------------------------------------------------------------
+# punctuation_usage
+# ---------------------------------------------------------------------------
+
+def test_punctuation_usage():
+    print("\npunctuation_usage")
+
+    check("empty",        punctuation_usage(""),                    {})
+    check("none present", punctuation_usage("no punctuation here"), {})
+    check("one of each",  punctuation_usage("Hi, there; you: wow! ok?"),
+          {',': 1, ';': 1, ':': 1, '!': 1, '?': 1})
+    check("repeats",      punctuation_usage("Yes!! No??"),
+          {'!': 2, '?': 2})
+
+    # Ellipsis counts as three separate periods. Fine, but know it -- it will
+    # inflate your period count on informal writing that uses "..." a lot.
+    check("ellipsis",     punctuation_usage("Wait... really?"),
+          {'.': 3, '?': 1})
+
+    # Dashes, parens and quotes are NOT in the tracked set. Worth remembering
+    # when you add an em-dash feature later -- this helper won't see it.
+    check("ignores others", punctuation_usage('a--b (c) "d" e'),    {})
+
+
+# ---------------------------------------------------------------------------
+# proper_punctuation_usage
+# ---------------------------------------------------------------------------
+
+def test_proper_punctuation_usage():
+    print("\nproper_punctuation_usage")
+
+    # NOTE: these assert CURRENT behaviour, including the missing-key problem.
+    # Once you initialise both keys to 0, update the first and last of these.
+    check("all proper",    proper_punctuation_usage("One here. Two here. Three here."),
+          {'proper': 3})                      # no 'improper' key at all
+    check("empty",         proper_punctuation_usage(""),
+          {})                                 # neither key
+
+    check("one lowercase", proper_punctuation_usage("One here. two here. Three here."),
+          {'proper': 2, 'improper': 1})
+    check("all lowercase", proper_punctuation_usage("one. two. three."),
+          {'improper': 3})
+    check("no final stop", proper_punctuation_usage("One here. Two here. Three trails off"),
+          {'proper': 2, 'improper': 1})
+
+    # Quoted speech never splits, because the period is followed by a quote
+    # mark rather than whitespace. One "sentence", counted proper.
+    check("quote merges",  proper_punctuation_usage('She said "stop." Then he left.'),
+          {'proper': 1})
+
+
+# ---------------------------------------------------------------------------
 
 if __name__ == "__main__":
     test_split_sentences()
@@ -186,6 +237,8 @@ if __name__ == "__main__":
     test_burstiness_guard()
     test_burstiness_values()
     test_burstiness_ordering()
+    test_punctuation_usage()
+    test_proper_punctuation_usage()
 
     print(f"\n{_passed} passed, {_failed} failed")
     raise SystemExit(1 if _failed else 0)

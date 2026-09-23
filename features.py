@@ -65,6 +65,31 @@ def burstiness(text: str) -> float | None:
     return statistics.pstdev(lengths) / statistics.fmean(lengths)
 
 
+## Later features Grammar checker
+#track the use of punctuations in order to track the use of grammar in the text.
+def punctuation_usage(text: str) -> dict[str, int]:
+    punctuation_counts = {}
+    for char in text:
+        if char in '.,;:!?':
+            punctuation_counts[char] = punctuation_counts.get(char, 0) + 1
+    return punctuation_counts
+
+def proper_punctuation_usage(text: str) -> dict[str, int]:
+    sentences = split_sentences(text)
+    proper_counts = {}
+    for sentence in sentences:
+        if sentence and sentence[0].isupper() and sentence[-1] in '.!?':
+            proper_counts['proper'] = proper_counts.get('proper', 0) + 1
+        else:
+            proper_counts['improper'] = proper_counts.get('improper', 0) + 1
+    return proper_counts
+
+
+FEATURES = {
+    "burstiness": burstiness,                                  ## Measures the variability in sentence lengths
+    "proper_punctuation_usage": proper_punctuation_usage,      ## Measures the grammar usage in the sentences
+    
+}
 
 
 
