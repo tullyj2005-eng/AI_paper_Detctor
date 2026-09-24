@@ -1,6 +1,8 @@
 import re
 import statistics
 
+
+
 #splits the sentences by sentence ending punctuation, record sentence length
 
 ABBREVIATIONS = {
@@ -74,7 +76,7 @@ def punctuation_usage(text: str) -> dict[str, int]:
             punctuation_counts[char] = punctuation_counts.get(char, 0) + 1
     return punctuation_counts
 
-def proper_punctuation_usage(text: str) -> dict[str, int]:
+def proper_punctuation_usage(text: str) -> float | None:
     sentences = split_sentences(text)
     proper_counts = {}
     for sentence in sentences:
@@ -82,7 +84,10 @@ def proper_punctuation_usage(text: str) -> dict[str, int]:
             proper_counts['proper'] = proper_counts.get('proper', 0) + 1
         else:
             proper_counts['improper'] = proper_counts.get('improper', 0) + 1
-    return proper_counts
+    total = sum(proper_counts.values())
+    if total == 0:
+        return None
+    return proper_counts.get('proper', 0) / total
 
 
 
@@ -96,10 +101,12 @@ def vocabulary_richness(text: str) -> float | None:
     unique_words = set(words)
     return len(unique_words) / len(words)
 
-# Second additional function to track words that the author uses frequently,
-# this can help to determine wether the author is working with a limited human
-# vocab or an infinite library of words often related to AI usage.
-
+# Features to be added eventually
+def comma_rate(text: str) -> float | None: ...          # commas per 1000 words
+def semicolon_rate(text: str) -> float | None: ...      # semicolons per 1000 words
+def mean_sentence_length(text: str) -> float | None: ...# avg words per sentence
+def transition_density(text: str) -> float | None: ...  # moreover/furthermore/etc per 1000
+def type_token_ratio(text: str) -> float | None: ...    # unique/total over first 300 words
 
 
 
