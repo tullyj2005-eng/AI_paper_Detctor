@@ -66,7 +66,7 @@ def burstiness(text: str) -> float | None:
 
 
 ## Later features Grammar checker
-#track the use of punctuations in order to track the use of grammar in the text.
+# Track the use of punctuations in order to track the use of grammar in the text.
 def punctuation_usage(text: str) -> dict[str, int]:
     punctuation_counts = {}
     for char in text:
@@ -85,10 +85,29 @@ def proper_punctuation_usage(text: str) -> dict[str, int]:
     return proper_counts
 
 
+
+## Vocabulary Richness Feature
+# Measures the diversity of words used in the text.
+
+def vocabulary_richness(text: str) -> float | None:
+    words = _WORD.findall(text.lower())
+    if not words:
+        return None
+    unique_words = set(words)
+    return len(unique_words) / len(words)
+
+# Second additional function to track words that the author uses frequently,
+# this can help to determine wether the author is working with a limited human
+# vocab or an infinite library of words often related to AI usage.
+
+
+
+
+
 FEATURES = {
     "burstiness": burstiness,                                  ## Measures the variability in sentence lengths
     "proper_punctuation_usage": proper_punctuation_usage,      ## Measures the grammar usage in the sentences
-    
+
 }
 
 
