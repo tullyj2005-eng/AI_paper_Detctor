@@ -27,6 +27,6 @@ if __name__ == "__main__":
     X, y, groups, names = get_xy(table)
     print(f"\nX: {X.shape}   y: {len(y)}   groups: {len(set(groups))} prompts")
     print(f"features: {names}")
+    print(table["proper_punctuation_usage"].head())
+    print(table.groupby("label")["proper_punctuation_usage"].describe().round(4))
 
-print(table["proper_punctuation_usage"].head())
-print(table.groupby("label")["proper_punctuation_usage"].describe().round(4))
