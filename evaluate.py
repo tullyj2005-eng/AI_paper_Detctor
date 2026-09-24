@@ -41,7 +41,7 @@ if __name__ == "__main__":
     # Load documents
     human = load_documents(Path("data/human"))
     ai = load_documents(Path("data/ai"))
-    for name, fn in FEATURES,items():
+    for name, fn in FEATURES.items():
         print(f"Scoring feature: {name}")
         human_scores = score(human, fn)
         ai_scores = score(ai, fn)

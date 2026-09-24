@@ -102,18 +102,63 @@ def vocabulary_richness(text: str) -> float | None:
     return len(unique_words) / len(words)
 
 # Features to be added eventually
-def comma_rate(text: str) -> float | None: ...          # commas per 1000 words
-def semicolon_rate(text: str) -> float | None: ...      # semicolons per 1000 words
-def mean_sentence_length(text: str) -> float | None: ...# avg words per sentence
-def transition_density(text: str) -> float | None: ...  # moreover/furthermore/etc per 1000
-def type_token_ratio(text: str) -> float | None: ...    # unique/total over first 300 words
+def comma_rate(text: str) -> float | None:         # commas per 1000 words
+    words = text.split()
+    total_words = len(words)
+    x = 1000 # checking for comas ever 1,000 words
+
+    comma_count = text.count(',')
+
+    commas = (comma_count / total_words) * x
+    return commas    
+
+
+def semicolon_rate(text: str) -> float | None:      # semicolons per 1000 words
+    words = text.split()
+    total_words = len(words)
+    x = 1000
+
+    semicolon_count = text.count(';')
+
+    semicolon = (semicolon_count / total_words) * x
+
+    return semicolon
+
+
+
+def avg_sentence_length(text: str) -> float | None:
+    sentence_list = split_sentences(str)
+    words_per_sentence = []
+    for i in sentence_list:
+        words_per_sentence = count_words(i)
+
+    for i in words_per_sentence:
+        total = total + i
+        total / len(words_per_sentence)
+
+    return total
+
+###########  Not Implemented  ###########
+
+
+def transition_density(text: str) -> float | None:   # moreover/furthermore/etc per 1000
+    ...
+
+def type_token_ratio(text: str) -> float | None:     # unique/total over first 300 words
+    ...
+
 
 
 
 
 FEATURES = {
     "burstiness": burstiness,                                  ## Measures the variability in sentence lengths
-    "proper_punctuation_usage": proper_punctuation_usage,      ## Measures the grammar usage in the sentences
+    "proper_punctuation_usage": proper_punctuation_usage, 
+    "comma_rate": comma_rate,                                   ## Measures the comma rate in the text
+    "semicolon_rate": semicolon_rate,
+    "avg_sentence_length": avg_sentence_length,
+
+
 
 }
 
