@@ -8,7 +8,7 @@ from sklearn.model_selection import (
 )
 from sklearn.metrics import roc_auc_score, accuracy_score, confusion_matrix
 
-from dataset import load_sample, build_feature_table, get_xy
+from dataset_pipeline.dataset import load_sample, build_feature_table, get_xy
 
 from sklearn.metrics import (
     roc_auc_score, accuracy_score, confusion_matrix, roc_curve,

@@ -1,6 +1,6 @@
 import pandas as pd
 
-from features import FEATURES
+from features.features import FEATURES
 
 
 def load_sample(path="data/sample_2k.csv") -> pd.DataFrame:

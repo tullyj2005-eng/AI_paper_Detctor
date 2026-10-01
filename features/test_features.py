@@ -1,4 +1,5 @@
 """Tests for features.py.  Run with:  py test_features.py"""
+# Makes sure the features compute what we think they are computing.
 
 from features import split_sentences, count_words, burstiness, punctuation_usage, proper_punctuation_usage
 
