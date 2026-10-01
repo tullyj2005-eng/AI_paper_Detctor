@@ -132,10 +132,29 @@ def avg_sentence_length(text: str) -> float | None:
 
 
 def transition_density(text: str) -> float | None:   # moreover/furthermore/etc per 1000
-    ...
+    """Transition words per 1000 words."""
+    total_words = count_words(text)
+    if total_words < MIN_WORDS_FOR_RATE:
+        return None
+    transition_words = ["moreover", "furthermore", "however", "therefore", "consequently", "in addition", "on the other hand", "subsequently", ]
+    count = sum(text.lower().count(word) for word in transition_words)
+    return count / total_words * 1000
 
 def type_token_ratio(text: str) -> float | None:     # unique/total over first 300 words
-    ...
+    "The number of unique words in the first 300 words divided by the total number of words in the first 300 words."
+    
+    words = _WORD.findall(text.lower())
+    first_300_words = words[:300]
+    unique_words = set(first_300_words)
+    
+    if not first_300_words:
+        return None
+    
+    for word in first_300_words:
+        if word not in unique_words:
+            unique_words.add(word)
+
+    return len(unique_words) / len(first_300_words)
 
 
 
