@@ -142,6 +142,17 @@ def transition_density(text: str) -> float | None:   # moreover/furthermore/etc 
     count = sum(text.lower().count(word) for word in transition_words)
     return count / total_words * 1000
 
+
+## Check for M-dashes
+def mdash_check(text: str) -> float | None:
+    """Check if the text contains M-dashes."""
+    total_words = count_words(text)
+    if total_words < MIN_WORDS_FOR_RATE:
+        return None
+
+    return text.count("—") / total_words * 1000
+
+"""
 def type_token_ratio(text: str) -> float | None:     # unique/total over first 300 words
     "The number of unique words in the first 300 words divided by the total number of words in the first 300 words."
     
@@ -157,7 +168,7 @@ def type_token_ratio(text: str) -> float | None:     # unique/total over first 3
             unique_words.add(word)
 
     return len(unique_words) / len(first_300_words)
-
+"""
 
 
 
@@ -169,8 +180,8 @@ FEATURES = {
     "semicolon_rate": semicolon_rate,
     "avg_sentence_length": avg_sentence_length,
     "transition_density": transition_density,                    ## Measures the density of transition words in the text
-    "type_token_ratio": type_token_ratio,                          ## Measures the ratio of unique words to total words in the first 300 words
-
+    #"type_token_ratio": type_token_ratio,                          ## Measures the ratio of unique words to total words in the first 300 words
+    "mdash_check": mdash_check,                                      ## Checks for the presence of M-dashes in the text
 
 
 }
