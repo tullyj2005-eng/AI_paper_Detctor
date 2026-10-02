@@ -6,5 +6,6 @@
   "action": {
     "default_popup": "src/construct.html",
     "default_icon": "img/Icon.png"
-  }
+  },
+  "host_permissions": ["http://127.0.0.1:5000/*"]
 }

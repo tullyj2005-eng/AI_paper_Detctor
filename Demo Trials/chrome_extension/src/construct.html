@@ -2,13 +2,12 @@
 
 
 
+
 <html>
 
 
 
-function analyze() {
-    TODO()
-}
+
 <head>
 <style>
 
@@ -56,9 +55,11 @@ html, body{
 </head>
   <body>
     <h1>AI Paper Detector</h1>
-    <input type = "text" class = "input_box" id = "essay_input" placeholder = "Paste your text here...">
+    <textarea class = "input_box" id = "essay_input" placeholder = "Paste your text here..."></textarea>
     <br>
-    <button onclick="analyze()" class="analyze_button">Analyze</button>
+    <button id="analyze_button" class="analyze_button">Analyze</button>
 
+    <div id="result"> </div>
+    <script src="popup.js"></script>
   </body>
 </html>
