@@ -3,6 +3,7 @@
   "description": "Base Level Extension",
   "version": "1.0",
   "manifest_version": 3,
+  "permissions": ["activeTab", "scripting"],
   "action": {
     "default_popup": "src/construct.html",
     "default_icon": "img/Icon.png"

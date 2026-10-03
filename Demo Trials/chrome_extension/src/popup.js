@@ -1,5 +1,7 @@
 document.getElementById("analyze_button").addEventListener("click", analyze);
 
+
+
 async function analyze() {
   const text = document.getElementById("essay_input").value;
   const result = document.getElementById("result");
