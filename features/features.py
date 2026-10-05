@@ -3,7 +3,7 @@ import statistics
 
 from matplotlib import text
 
-
+import textstat
 
 #splits the sentences by sentence ending punctuation, record sentence length
 
@@ -170,8 +170,25 @@ def type_token_ratio(text: str) -> float | None:     # unique/total over first 3
     return len(unique_words) / len(first_300_words)
 """
 
+def vocabulary_richness(text: str) -> float | None:
+    total_words = count_words(text)
+    if total_words < MIN_WORDS_FOR_RATE:
+        return None
 
+    words = re.findall(r'\b\w+\b', text.lower())
+    unique_words = len(set(words))
+    return unique_words / total_words
 
+## 
+def flesch_kincaid_grade(text: str) -> float | None:
+    return textstat.flesch_kincaid_grade(text)
+
+def difficult_word_density(text: str) -> float | None:
+    """Difficult words per 1000 words."""
+    total_words = count_words(text)
+    if total_words < MIN_WORDS_FOR_RATE:
+        return None
+    return textstat.difficult_words(text) / total_words * 1000
 
 FEATURES = {
     "burstiness": burstiness,                                  ## Measures the variability in sentence lengths
@@ -182,8 +199,9 @@ FEATURES = {
     "transition_density": transition_density,                    ## Measures the density of transition words in the text
     #"type_token_ratio": type_token_ratio,                          ## Measures the ratio of unique words to total words in the first 300 words
     "mdash_check": mdash_check,                                      ## Checks for the presence of M-dashes in the text
-
-
+    "vocabulary_richness": vocabulary_richness,                  ## Ratio of unique words to total words              
+    "flesch_kincaid_grade": flesch_kincaid_grade,
+    "difficult_word_density": difficult_word_density
 }
 
 
