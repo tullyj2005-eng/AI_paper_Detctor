@@ -103,7 +103,7 @@ def vocabulary_richness(text: str) -> float | None:
     unique_words = set(words)
     return len(unique_words) / len(words)
 
-MIN_WORDS_FOR_RATE = 100
+MIN_WORDS_FOR_RATE = 500
 
 
 def comma_rate(text: str) -> float | None:
